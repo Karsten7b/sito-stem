@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+    }
+
+    #game {
+      border: 1px solid #fff;
+      display: grid;
+      grid-template-columns: repeat(10, 20px);
+      grid-template-rows: repeat(20, 20px);
+      width: 200px;
+      height: 400px;
+    }
+
+    .block {
+      background-color: yellow;
+    }
+
+    .block2 {
+      background-color: blue;
+    }
+
+    .block3 {
+      background-color: red;
+    }
+
+    .ball {
+      background-color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      margin: auto;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div class="ball" onclick="window.location.href='https://www.youtube.it'"></div>
+  </div>
+
+  <script>
+    const game = document.getElementById('game');
+    const grid = Array.from({ length: 20 }, () => Array(10).fill(false));
+
+    const shapes = [
+      // T
+      [
+        [1, 1, 1],
+        [0, 1, 0]
+      ],
+      // I
+      [
+        [1, 1, 1, 1]
+      ],
+      // O
+      [
+        [1, 1],
+        [1, 1]
+      ],
+      // L
+      [
+        [1, 1, 1],
+        [1, 0, 0]
+      ],
+      // J
+      [
+        [1, 1, 1],
+        [0, 0, 1]
+      ],
+      // S
+      [
+        [0, 1, 1],
+        [1, 1, 0]
+      ],
+      // Z
+      [
+        [1, 1, 0],
+        [0, 1, 1]
+      ]
+    ];
+
+    let currentShape = shapes[0];
+    let currentRotation = 0;
+    let currentPosition = { x: 0, y: 0 };
+    let gameOver = false;
+
+    function draw() {
+      game.innerHTML = '';
+      grid.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+          const div = document.createElement('div');
+          if (cell === 1) {
+            div.className = 'block';
+          } else if (cell === 2) {
+            div.className = 'block2';
+          } else if (cell === 3) {
+            div.className = 'block3';
+          }
+          game.appendChild(div);
+        });
+      });
+
+      currentShape.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+          if (cell) {
+            const x = currentPosition.x + rowIndex;
+            const y = currentPosition.y + cellIndex;
+            grid[x][y] = Math.floor(Math.random() * 3) + 1; // Change to 1, 2, 3 for different colors
+          }
+        });
+      });
+    }
+
+    function moveDown() {
+      const newPosition = { x: currentPosition.x + 1, y: currentPosition.y };
+
+      if (!collisionDetected(newPosition)) {
+        currentPosition = newPosition;
+      } else {
+        mergeShape();
+        clearLines();
+        currentShape = getRandomShape();
+        currentRotation = 0;
+        currentPosition = { x: 0, y: 0 };
+        if (collisionDetected(currentPosition)) {
+          gameOver = true;
+        }
+      }
+
+      draw();
+    }
+
+    function collisionDetected(position) {
+      const shape = currentShape[currentRotation];
+
+      for (let i = 0; i < shape.length; i++) {
+        for (let j = 0; j < shape[i].length; j++) {
+          if (shape[i][j] && (grid[position.x + i] && grid[position.x + i][position.y + j])) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    function mergeShape() {
+      currentShape.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+          if (cell) {
+            const x = currentPosition.x + rowIndex;
+            const y = currentPosition.y + cellIndex;
+            grid[x][y] = Math.floor(Math.random() * 3) + 1; // Change to 1, 2, 3 for different colors
+          }
+        });
+      });
+    }
+
+    function clearLines() {
+      let linesCleared = 0;
+
+      for (let i = grid.length - 1; i >= 0; i--) {
+        if (grid[i].every(cell => cell)) {
+          grid.splice(i, 1);
+          grid.unshift(Array(10).fill(false));
+          linesCleared++;
+        }
+      }
+
+      return linesCleared;
+    }
+
+    function getRandomShape() {
+      return shapes[Math.floor(Math.random() * shapes.length)];
+    }
+
+    function startGame() {
+      currentShape = getRandomShape();
+      currentRotation = 0;
+      currentPosition = { x: 0, y: 0 };
+      gameOver = false;
+
+      draw();
+
+      setInterval(() => {
+        moveDown();
+      }, 500);
+    }
+
+    startGame();
+  </script>
+</body>
+</html>

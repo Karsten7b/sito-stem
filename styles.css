@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.menu-button {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20px;
+}
+
+.menu-line {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  z-index: 998;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-content a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  margin: 10px;
+}
+
+.content {
+  padding: 100px 20px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: bold;
+  background: linear-gradient(to right, #ffd700, #fbb03b); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 5px white, 0 0 10px rgba(0,0,0,0.5); 
+}
+
+.sub-title {
+  color: white; 
+}
+
+.scroll-arrow {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.scroll-arrow a {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: #333;
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  line-height: 50px;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
